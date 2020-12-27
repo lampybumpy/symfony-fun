@@ -1,0 +1,10 @@
+<div>
+    <h1>New feedback</h1>
+
+    <div>Name: {{ feedback.name }}</div>
+    <div>Email: {{ feedback.email }}</div>
+    <div>Text: {{ feedback.text }}</div>
+    <div>Created: {{ feedback.createdAt|date('Y-m-d H:i:s') }}</div>
+    <div>Remote address: {{ feedback.remoteAddr }}</div>
+
+</div>

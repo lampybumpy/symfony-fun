@@ -1,0 +1,90 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <h1>Hey! Would you like to add a feedback for us?</h1>
+{#    {{ form(form) }}#}
+
+    {{ form_start(form, { 'attr' : { 'id' : 'feedback-form', 'class' : 'mb-3'}}) }}
+        <div class="alert alert-danger alert-dismissible fade show" style="display: none;" role="alert">
+{#            {{ form_errors(form) }}#}
+            <span id="error-message"></span>
+            <button type="button" class="btn-close" aria-label="Close"></button>
+        </div>
+
+    <div class="alert alert-success alert-dismissible fade show" style="display: none;" role="alert">
+            <span id="success-message"></span>
+            <button type="button" class="btn-close" aria-label="Close"></button>
+        </div>
+
+        <div class="mb-3">
+            {{ form_row(form.name) }}
+            <small class="text-danger">{{ form_errors(form.name) }}</small>
+        </div>
+
+        <div class="mb-3">
+            {{ form_row(form.email) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_row(form.text) }}
+        </div>
+
+
+    {{ form_end(form) }}
+
+    <a href="{{ path('feedbacks_index') }}" class="link">Feedback list</a>
+
+{% endblock body %}
+
+{% block javascripts %}
+
+
+    <script>
+        $(document).ready(() => {
+            $('.btn-close').on('click', () => {
+                $('.alert-danger').hide();
+                $('.alert-success').hide();
+            });
+
+            $('#feedback-form').on("submit", (event) => {
+
+                event.preventDefault();
+
+                console.log('Submitted');
+
+                $.ajax({
+                    url: '/',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: $('form').serialize(),
+
+                    success: (data) => {
+
+                        if (data.status === 'success') {
+                            console.log(data.message);
+
+                            $('#success-message').html(data.message);
+
+                            $('.alert-danger').hide();
+                            $('.alert-success').show();
+                        }
+
+
+                        $('#feedback-form')[0].reset();
+
+
+                    },
+                    error: (data) => {
+
+                        console.log(JSON.parse(data.responseText));
+
+                        $('#error-message').html(JSON.parse(data.responseText));
+                        $('.alert-success').hide();
+                        $('.alert-danger').show();
+                    }
+                })
+            })
+        });
+    </script>
+{% endblock javascripts %}

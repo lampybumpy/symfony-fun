@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <h1>Feedback list</h1>
+
+    <div class="my-3">
+        <a href="{{ path('feedbacks_create') }}" class="link">Add new feedback</a>
+    </div>
+
+    <table class="table mb-3">
+        <thead>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Text</th>
+            <th scope="col">Created</th>
+            <th scope="col">Remote Address</th>
+        </tr>
+        </thead>
+        <tbody>
+
+            {% for feedback in feedbacks %}
+                <tr>
+                    <td>{{ feedback.name }}</td>
+                    <td>{{ feedback.email }}</td>
+                    <td>{{ feedback.text }}</td>
+                    <td>{{ feedback.createdAt|date('Y-m-d H:i:s') }}</td>
+                    <td>{{ feedback.remoteAddr }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock body %}
+
